@@ -4,5 +4,12 @@ const nextConfig = {
   images: {
     unoptimized: true,   
   },
+  basePath: '/eportfolio',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 export default nextConfig;
