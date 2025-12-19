@@ -5,8 +5,8 @@ import "./globals.css";
 const font = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Rayan Saadani Hassani | Software Engineer",
-  description: "Portfolio de Rayan Saadani Hassani, étudiant en génie logiciel et développeur fullstack.",
+  title: "Rayan Saadani Hassani",
+  description: "ePortfolio",
 };
 
 export default function RootLayout({

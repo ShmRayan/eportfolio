@@ -1,214 +1,251 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { 
   Github, 
   Linkedin, 
   Mail, 
+  Calendar,
   Download, 
   MapPin, 
   GraduationCap, 
   Code, 
+  History,
   Briefcase, 
   Terminal, 
   ExternalLink,
-  Sparkles
+  Sparkles,
+  ChevronDown
 } from "lucide-react";
+const Reveal = ({ children }: { children: ReactNode }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+import { ReactNode, useEffect, useState } from "react";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-300 selection:bg-indigo-500/30 font-sans">
-      
-      {/* 1. LUMIÈRE DU HAUT */}
+
       <div className="fixed inset-0 z-0 h-full w-full bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]"></div>
       
-      {/* 2. LUMIÈRE DU BAS (Ambiance) */}
       <div className="fixed bottom-0 left-0 w-full h-[500px] bg-[radial-gradient(ellipse_80%_60%_at_50%_120%,rgba(120,119,198,0.15),rgba(255,255,255,0))] z-0 pointer-events-none"></div>
 
       <div className="relative z-10 px-4 py-8 md:p-12">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-          {/* --- LEFT SIDEBAR (Profil Fixe) --- */}
           <aside className="lg:col-span-4 lg:h-screen lg:sticky lg:top-12">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              // CHANGE : Fond plus clair et bordure plus forte
-              className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 backdrop-blur-xl shadow-2xl shadow-black/50"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="bg-neutral-800/40 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-2xl shadow-2xl shadow-black/50"
             >
               {/* Profile Header */}
-              <div className="relative group w-24 h-24 mb-8">
-                <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                <div className="relative w-full h-full bg-neutral-900 rounded-2xl flex items-center justify-center text-4xl font-black text-white border border-white/10">
-                  R
+              <div className="relative group w-20 h-20 mb-10">
+                <div className="absolute -inset-1 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-[2rem] blur opacity-20 group-hover:opacity-50 transition duration-500"></div>
+                <div className="relative w-full h-full bg-neutral-900 rounded-[1.5rem] flex items-center justify-center border border-white/10 shadow-inner">
+                  <span className="text-3xl font-mono font-black text-white">
+                    <span className="text-indigo-500"></span>R<span className="text-indigo-500"></span>
+                  </span>
                 </div>
               </div>
 
-              <h1 className="text-4xl font-extrabold tracking-tighter text-white mb-2 leading-tight">
-                Rayan <br/> Saadani Hassani
-              </h1>
-              <p className="text-indigo-400 font-medium tracking-wide mb-8 uppercase text-xs">
-                Software Engineering Student
-              </p>
-
-              {/* Info List */}
-              <div className="space-y-4 mb-10 text-sm">
-                <SidebarLink icon={<MapPin size={16}/>} label="Ottawa, Ontario, Canada" />
-                <SidebarLink icon={<GraduationCap size={16}/>} label="uOttawa (Dean's Honour List)" />
-                <SidebarLink icon={<Code size={16}/>} label=".NET, Python, React, AWS" />
+              <div className="mb-6 min-h-[140px]"> 
+                <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-white leading-[0.85] mb-4">
+                  <Typewriter text="Rayan Saadani Hassani" />
+                </h1>
+                <p className="text-indigo-400 font-bold tracking-[0.2em] uppercase text-[11px] mt-4">
+                  Software Engineering Student
+                </p>
               </div>
 
-              {/* Actions */}
-              <div className="space-y-3">
-                <a href="mailto:shmrayan@gmail.com" className="w-full bg-white text-black py-4 rounded-2xl font-bold hover:scale-[1.02] active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg shadow-white/5">
-                  <Mail size={18}/> Contact Me
+              {/* Badge Statut */}
+              <div className="flex items-center gap-2 w-fit px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-8">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">
+                  Available for Summer 2026 CO-OP
+                </span>
+              </div>
+
+              {/* Liste Infos */}
+              <div className="space-y-4 mb-10 border-t border-white/5 pt-8">
+                <SidebarLink icon={<MapPin size={18}/>} label="Ottawa, Ontario, Canada" />
+                <SidebarLink icon={<GraduationCap size={18}/>} label="uOttawa" />
+              </div>
+
+              {/* ACTIONS  */}
+              <div className="flex items-center gap-3 mt-auto">
+                <a href="/resume.pdf" target="_blank"
+                  className="flex-grow bg-white text-black h-14 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg">
+                  <Download size={18}/> Resume
                 </a>
-                <div className="grid grid-cols-2 gap-3">
-                  <SocialLink href="https://linkedin.com/in/Saadani-Hassani-Rayan" icon={<Linkedin size={20}/>} label="LinkedIn" />
-                  <SocialLink href="https://github.com/ShmRayan" icon={<Github size={20}/>} label="GitHub" />
-                </div>
-                <a href="#" className="w-full border border-white/10 py-4 rounded-2xl font-medium hover:bg-white/5 transition flex justify-center items-center gap-2 text-neutral-400">
-                  <Download size={18}/> Download Resume
+            
+                <a href="https://www.linkedin.com/in/rayan-saadani-hassani/" target="_blank" 
+                  className="w-14 h-14 flex items-center justify-center bg-neutral-800/60 border border-white/10 rounded-2xl text-white hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-300">
+                  <Linkedin size={22} strokeWidth={2.5} />
+                </a>
+                
+                <a href="https://github.com/ShmRayan" target="_blank"
+                  className="w-14 h-14 flex items-center justify-center bg-neutral-800/60 border border-white/10 rounded-2xl text-white hover:border-indigo-500/50 hover:bg-indigo-500/10 transition-all duration-300">
+                  <Github size={22} strokeWidth={2.5} />
                 </a>
               </div>
             </motion.div>
           </aside>
 
-          {/* --- MAIN CONTENT (Droite) --- */}
           <main className="lg:col-span-8 flex flex-col gap-16">
             
             {/* SECTION: EXPERIENCE */}
-            <section>
+            <Reveal><section>
               <div className="mb-6 ml-2">
                 <SectionHeader icon={<Briefcase size={18}/>} title="Work Experience" />
               </div>
 
-              {/* CHANGE : Fond plus clair et bordure plus forte */}
               <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
                 <div className="space-y-16">
-                    {/* GROUPE 1 : UOTTAWA */}
-                    <CompanyGroup logo="/uottawa.png" company="University of Ottawa">
-                        <RoleItem 
-                          title="Software Developer"
-                          date="Sep 2024 – Present"
-                          type="Internship / Part-time"
-                          tags={['.NET', 'C#', 'GitLab CI', 'Azure AD', 'SQL']}
-                        />
-                        <RoleItem 
-                          title="Teaching Assistant"
-                          date="Jan 2025 – Present"
-                          type="Part-time"
-                          desc="Mentoring 100+ students in Python, Digital Systems, and OOP."
-                          tags={['Python', 'Algorithms', 'Mentoring']}
-                        />
-                    </CompanyGroup>
+    
+                  {/* GROUP 1 : UOTTAWA */}
+                  <CompanyGroup logo="/uottawa.png" company="University of Ottawa" location="Ottawa">
+                      <RoleItem 
+                        title="Software Developer"
+                        date="Sep 2024 – Present"
+                        type="Internship / Part-time"
+                        tags={['.NET', 'C#', 'GitLab CI/CD', 'Azure AD', 'SQL Server']}
+                        history={[
+                          { role: "Part-time", period: "Sep 2025 – Present" },
+                          { role: "CO-OP", period: "May 2024 – Aug 2024" },
+                          { role: "Part-time", period: "Jan 2024 – Apr 2024" },
+                          { role: "CO-OP", period: "Sep 2024 – Dec 2024" },
+                        ]}/>
+                      <RoleItem 
+                        title="Teaching Assistant"
+                        date="Jan 2025 – Present"
+                        type="Part-time"
+                        tags={['Python', 'Java','Algorithms', 'OOP',]}
+                        history={[
+                          { role: "Digital Systems", period: "Jan 2026 – Present" },
+                          { role: "Intro to Software Eng.", period: "Sep 2025 – Dec 2025" },
+                          { role: "Python", period: "Jan 2025 – Apr 2025" },
+                        ]}
+                      />
+                  </CompanyGroup>
 
-                    {/* GROUPE 2 : KRUGER */}
-                    <CompanyGroup logo="/kruger.png" company="Kruger Products">
-                        <RoleItem 
-                          title="Data Analyst"
-                          date="Jan 2024 – May 2024"
-                          type="Internship"
-                          tags={['Power BI', 'SQL', 'Power Automate']}
-                        />
-                    </CompanyGroup>
-                </div>
+                  {/* GROUP 2 : KRUGER */}
+                  <CompanyGroup logo="/kruger.png" company="Kruger Products" location="Gatineau">
+                      <RoleItem 
+                        title="Data Analyst"
+                        date="Jan 2024 – May 2024"
+                        type="Internship"
+                        tags={['Power BI', 'MySQL', 'Power Automate']}
+                      />
+                  </CompanyGroup>
+
+              </div>
               </div>
             </section>
-
+          </Reveal>
+            
             {/* SECTION: EDUCATION */}
-            <section>
-               <div className="mb-6 ml-2">
-                 <SectionHeader icon={<GraduationCap size={18}/>} title="Education" />
-               </div>
-               
-               {/* CHANGE : Fond plus clair et bordure plus forte */}
-               <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
-                   <div className="space-y-12">
-                      <CompanyGroup logo="/uottawa.png" company="University of Ottawa">
-                          <RoleItem 
-                            title="BASc in Software Engineering"
-                            date="Sep 2022 – Dec 2026"
-                            type="Dean's Honour List (GPA: 8.4/10)"
-                            desc="Relevant Coursework: Data Structures & Algorithms, Operating Systems, Software QA, User Interfaces, Networking."
-                            tags={['CO-OP', 'Engineering']}
-                          />
-                      </CompanyGroup>
-                   </div>
-               </div>
-            </section>
-
+            <Reveal>
+              <section>
+                <div className="mb-6 ml-2">
+                  <SectionHeader icon={<GraduationCap size={18}/>} title="Education" />
+                </div>
+                
+                <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
+                    <div className="space-y-12">
+                        <CompanyGroup logo="/uottawa.png" company="University of Ottawa" location="OTTAWA">
+                            <RoleItem 
+                              title="BASc in Software Engineering"
+                              date="Sep 2022 – Dec 2026"
+                              type={<>Dean's Honour List (2023, 2024, 2025) <br/> GPA: 8.4/10</>}
+                              tags={['CO-OP', 'Engineering']}
+                            />
+                        </CompanyGroup>
+                    </div>
+                </div>
+              </section>
+            </Reveal>
+            
             {/* SECTION: PROJECTS */}
-            <section>
-              <div className="mb-6 ml-2">
-                <SectionHeader icon={<Terminal size={18}/>} title="Featured Projects" />
-              </div>
+            <Reveal>
+               <section>
+                <div className="mb-6 ml-2">
+                  <SectionHeader icon={<Terminal size={18}/>} title="Featured Projects" />
+                </div>
+                
+                <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <ProjectShowcase 
+                        title="AutoApply AI Agent"
+                        desc="Intelligent bot using Generative AI & Selenium to automate job applications."
+                        stack={['Python', 'Selenium', 'OpenAI']}
+                        links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
+                        color="from-indigo-500/20 to-purple-500/20"
+                      />
+                      <ProjectShowcase 
+                        title="Fitness Coaching App"
+                        desc="Full-stack platform with personalized workout plans and secure JWT auth."
+                        stack={['React', 'Node.js', 'JWT']}
+                        links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
+                        color="from-blue-500/20 to-cyan-500/20"
+                      />
+                      <ProjectShowcase 
+                        title="Task Management"
+                        desc="Cloud-native task tracking app containerized with Docker on AWS."
+                        stack={['Flask', 'Docker', 'AWS']}
+                        links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
+                        color="from-orange-500/20 to-red-500/20"
+                      />
+                      <ProjectShowcase 
+                        title="Online Coaching"
+                        desc="UX-focused coaching platform with dynamic scheduling features."
+                        stack={['React', 'Figma', 'UX']}
+                        links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
+                        color="from-emerald-500/20 to-teal-500/20"
+                      />
+                  </div>
+                </div>
+              </section>
+            </Reveal>
               
-              {/* CHANGE : Fond plus clair et bordure plus forte */}
-              <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <ProjectShowcase 
-                      title="AutoApply AI Agent"
-                      desc="Intelligent bot using Generative AI & Selenium to automate job applications."
-                      stack={['Python', 'Selenium', 'OpenAI']}
-                      links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
-                      color="from-indigo-500/20 to-purple-500/20"
-                    />
-                    <ProjectShowcase 
-                      title="Fitness Coaching App"
-                      desc="Full-stack platform with personalized workout plans and secure JWT auth."
-                      stack={['React', 'Node.js', 'JWT']}
-                      links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
-                      color="from-blue-500/20 to-cyan-500/20"
-                    />
-                    <ProjectShowcase 
-                      title="Task Management"
-                      desc="Cloud-native task tracking app containerized with Docker on AWS."
-                      stack={['Flask', 'Docker', 'AWS']}
-                      links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
-                      color="from-orange-500/20 to-red-500/20"
-                    />
-                    <ProjectShowcase 
-                      title="Online Coaching"
-                      desc="UX-focused coaching platform with dynamic scheduling features."
-                      stack={['React', 'Figma', 'UX']}
-                      links={{ repo: "https://github.com/ShmRayan", demo: "#" }}
-                      color="from-emerald-500/20 to-teal-500/20"
-                    />
+
+            {/* SECTION: STACK */}
+            <Reveal>
+              <section>
+                <div className="mb-6 ml-2">
+                  <SectionHeader icon={<Code size={18}/>} title="STACK" />
                 </div>
-              </div>
-            </section>
 
-            {/* SECTION: TECHNICAL ARSENAL */}
-            <section>
-              <div className="mb-6 ml-2">
-                <SectionHeader icon={<Code size={18}/>} title="Technical Arsenal" />
-              </div>
-
-              {/* CHANGE : Fond plus clair et bordure plus forte */}
-              <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {/* Backend */}
-                    <TechCard name=".NET Core" icon="🔷" color="text-blue-400" />
-                    <TechCard name="Python" icon="🐍" color="text-yellow-400" />
-                    <TechCard name="C#" icon="#️⃣" color="text-purple-400" />
-                    <TechCard name="SQL" icon="🗄️" color="text-gray-400" />
-                    {/* Frontend */}
-                    <TechCard name="React" icon="⚛️" color="text-cyan-400" />
-                    <TechCard name="Next.js" icon="▲" color="text-white" />
-                    <TechCard name="Tailwind" icon="🌊" color="text-teal-400" />
-                    {/* DevOps/Tools */}
-                    <TechCard name="Docker" icon="🐳" color="text-blue-500" />
-                    <TechCard name="AWS" icon="☁️" color="text-orange-400" />
-                    <TechCard name="GitLab CI" icon="🦊" color="text-orange-600" />
-                    <TechCard name="Power BI" icon="📊" color="text-yellow-500" />
+                <div className="bg-neutral-800/50 border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl shadow-black/50">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">    
+                      <TechCard name="Python" slug="/icons/python-svgrepo-com.svg" />                   
+                      <TechCard name="React" slug="react" />                                           
+                      <TechCard name="JavaScript" slug="javascript" />
+                      <TechCard name="TypeScript" slug="typescript" />                      
+                      <TechCard name="Java" slug="/icons/java-svgrepo-com.svg" />  
+                      <TechCard name=".NET" slug="dotnet" />
+                      <TechCard name="C#" slug="/icons/csharp-svgrepo-com.svg" />  
+                      <TechCard name="SQL" slug="/icons/database-svgrepo-com.svg" /> 
+                      <TechCard name="Docker" slug="docker" />
+                      <TechCard name="CI/CD" slug="/icons/systems-devops-cicd-pipeline-svgrepo-com.svg" /> 
+                      <TechCard name="Power BI" slug="/icons/powerbi.png" />
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
 
-            <footer className="py-12 border-t border-white/5 text-neutral-600 text-[10px] uppercase tracking-[0.2em] flex justify-between">
+            </Reveal>
+              
+            <footer className="py-12 border-t border-white/5 text-neutral-600 text-[15px] uppercase tracking-[0.2em] flex justify-between">
               <span>© 2025 Rayan Saadani Hassani</span>
-              <span>Ottawa, Canada</span>
             </footer>
 
           </main>
@@ -217,8 +254,6 @@ export default function Home() {
     </div>
   );
 }
-
-// --- SUB-COMPONENTS (PRO STYLE) ---
 
 function SectionHeader({ icon, title }: { icon: React.ReactNode, title: string }) {
   return (
@@ -235,28 +270,42 @@ function SectionHeader({ icon, title }: { icon: React.ReactNode, title: string }
 
 function SidebarLink({ icon, label }: { icon: React.ReactNode, label: string }) {
   return (
-    <div className="flex items-center gap-3 text-neutral-400 hover:text-white transition cursor-default group">
-      <span className="text-neutral-600 group-hover:text-indigo-400 transition">{icon}</span>
-      {label}
+    <div className="flex items-center gap-3 text-neutral-400 group cursor-default">
+      <span className="text-indigo-400/80 group-hover:text-indigo-400 transition-colors duration-300">
+        {icon}
+      </span>
+      <span className="text-[13px] group-hover:text-neutral-200 transition-colors">
+        {label}
+      </span>
     </div>
   );
 }
 
-function SocialLink({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) {
+function SocialLink({ href, icon }: { href: string, icon: React.ReactNode }) {
   return (
-    <a href={href} target="_blank" className="flex flex-col items-center justify-center p-4 bg-neutral-800/50 border border-white/10 rounded-2xl hover:bg-neutral-700 transition group shadow-sm">
-      <span className="group-hover:scale-110 transition duration-300">{icon}</span>
-    </a>
+    <motion.a 
+      href={href} 
+      target="_blank"
+      whileHover={{ y: -4 }} 
+      whileTap={{ scale: 0.95 }}
+      className="relative flex items-center justify-center p-4 bg-neutral-800/30 border border-white/5 rounded-2xl 
+                 hover:border-indigo-500/50 hover:bg-indigo-500/5 transition-all duration-300 group overflow-hidden shadow-xl"
+    >
+      <div className="absolute inset-0 bg-indigo-500/0 group-hover:bg-indigo-500/5 blur-xl transition-all duration-500" />
+      
+      <span className="relative z-10 text-neutral-500 group-hover:text-indigo-400 transition-colors duration-300">
+        {icon}
+      </span>
+    </motion.a>
   );
 }
-function CompanyGroup({ logo, company, children }: any) {
+
+function CompanyGroup({ logo, company, location, children }: any) {
   return (
     <div className="relative">
-      {/* Ligne verticale */}
       <div className="absolute left-[24px] top-14 bottom-0 w-[2px] bg-gradient-to-b from-neutral-800 via-neutral-800 to-transparent"></div>
       
       <div className="flex gap-8">
-        {/* Logo */}
         <div className="relative z-10 flex-shrink-0 w-12 h-12 bg-white rounded-xl overflow-hidden border border-white/10 shadow-lg shadow-white/5">
           <img 
             src={logo} 
@@ -266,10 +315,15 @@ function CompanyGroup({ logo, company, children }: any) {
         </div>
 
         <div className="flex-1 flex flex-col pt-0.5">
-            {/* NOM ENTREPRISE : Plus petit, Gris, et Marge réduite */}
-            <h3 className="text-lg font-semibold text-neutral-500 mb-4">{company}</h3>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                <h3 className="text-lg font-semibold text-neutral-500">{company}</h3>
+                {location && (
+                    <span className="text-xs font-medium text-neutral-500 flex items-center gap-1.5 uppercase tracking-wider">
+                        <MapPin size={12} /> {location}
+                    </span>
+                )}
+            </div>
             
-            {/* Liste des jobs : Espace réduit entre les jobs (gap-8 au lieu de 12) */}
             <div className="flex flex-col gap-8">
                 {children}
             </div>
@@ -278,35 +332,66 @@ function CompanyGroup({ logo, company, children }: any) {
     </div>
   );
 }
+function RoleItem({ title, date, type, desc, tags, history }: any) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
-function RoleItem({ title, date, type, desc, tags }: any) {
   return (
     <div className="relative group">
-      <div className="absolute -left-[77px] top-[10px] w-2.5 h-2.5 rounded-full border-2 border-[#050505] bg-indigo-500 hidden group-[&:not(:first-child)]:block shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+      <div className="absolute -left-[61px] top-[10px] w-2.5 h-2.5 rounded-full border-2 border-[#050505] bg-indigo-500 block z-20 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
       
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
         <h4 className="text-xl font-bold text-neutral-100 tracking-tight group-hover:text-indigo-400 transition">{title}</h4>
+        
         <div className="flex items-center gap-2 mt-1 sm:mt-0">
-            {/* CHANGE : Badge Date plus contrasté */}
-            <span className="text-[10px] font-semibold text-neutral-300 bg-white/10 border border-white/10 px-3 py-1 rounded-full uppercase tracking-wider">
+            {history && (
+              <button 
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-bold hover:bg-indigo-500/20 transition-all active:scale-95"
+              >
+                <History size={12} />
+                {isExpanded ? "HIDE DETAILS" : "VIEW TIMELINE"}
+                <motion.div animate={{ rotate: isExpanded ? 180 : 0 }}>
+                  <ChevronDown size={12} />
+                </motion.div>
+              </button>
+            )}
+
+            <span className="text-[10px] font-semibold text-neutral-300 bg-white/10 border border-white/10 px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-2">
+                <Calendar size={12} className="text-indigo-400" />
                 {date}
             </span>
         </div>
       </div>
       
       <div className="text-sm font-medium text-indigo-400/90 mb-3">{type}</div>
-      {/* CHANGE : Texte description plus clair */}
       {desc && <p className="text-sm text-neutral-300 mb-5 leading-relaxed max-w-2xl">{desc}</p>}
+
+      <AnimatePresence>
+        {isExpanded && history && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="overflow-hidden mb-6"
+          >
+            <div className="pt-4 pb-2 ml-2 border-l-2 border-white/5 space-y-4">
+              {history.map((item: any, idx: number) => (
+                <div key={idx} className="relative pl-6">
+                  <div className="absolute left-[-5px] top-1.5 w-2 h-2 rounded-full bg-neutral-600 border border-neutral-950"></div>
+                  <div className="flex flex-col">
+                    <span className="text-xs font-bold text-neutral-200">{item.role}</span>
+                    <span className="text-[10px] text-neutral-500 uppercase tracking-widest">{item.period}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       <div className="flex flex-wrap gap-2.5 mt-4">
         {tags.map((t: string) => (
-          <span 
-            key={t} 
-            // CHANGE : Tags plus clairs
-            className="px-3 py-1.5 rounded-full text-[11px] font-medium tracking-wide 
-                      text-neutral-300 bg-white/10 border border-white/10 
-                      transition-all duration-300 cursor-default shadow-sm hover:bg-white/20 hover:border-indigo-500/30 hover:text-white"
-          >
+          <span key={t} className="px-3 py-1.5 rounded-full text-[11px] font-medium tracking-wide text-neutral-300 bg-white/10 border border-white/10 transition-all duration-300 hover:bg-white/20 hover:border-indigo-500/30">
             {t}
           </span>
         ))}
@@ -315,12 +400,20 @@ function RoleItem({ title, date, type, desc, tags }: any) {
   );
 }
 
-function TechCard({ name, icon, color }: any) {
+function TechCard({ name, slug }: { name: string, slug: string }) {
+  const iconSrc = slug.startsWith('/') ? slug : `https://cdn.simpleicons.org/${slug}`;
+
   return (
-    // CHANGE : Carte Tech plus claire
-    <div className="flex items-center gap-3 p-4 bg-neutral-800/50 border border-white/10 rounded-2xl hover:bg-neutral-700 transition duration-300 group cursor-default shadow-sm">
-      <span className="text-xl group-hover:scale-110 transition duration-300">{icon}</span>
-      <span className={`text-sm font-bold text-neutral-300 group-hover:text-white transition ${color ? `group-hover:${color}` : ''}`}>
+    <div className="flex items-center gap-3 p-4 bg-neutral-800/50 border border-white/10 rounded-2xl hover:bg-neutral-700 transition duration-300 group cursor-default shadow-sm hover:border-white/20">
+      <img 
+        src={iconSrc} 
+        alt={name}
+        className="w-6 h-6 object-contain"
+        onError={(e) => {
+          e.currentTarget.style.opacity = '0.5';
+        }}
+      />
+      <span className="text-sm font-bold text-neutral-300 group-hover:text-white transition">
         {name}
       </span>
     </div>
@@ -329,7 +422,6 @@ function TechCard({ name, icon, color }: any) {
 
 function ProjectShowcase({ title, desc, stack, color, links }: any) {
   return (
-    // CHANGE : Carte Projet plus claire
     <div className="group relative bg-neutral-800/50 border border-white/10 rounded-3xl overflow-hidden hover:bg-neutral-800 transition-all duration-500 flex flex-col hover:border-white/20 hover:shadow-xl shadow-md">
       <div className={`absolute -right-10 -top-10 w-40 h-40 bg-gradient-to-br ${color} rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700`}></div>
       <div className="relative z-10 p-6 flex flex-col h-full">
@@ -346,7 +438,6 @@ function ProjectShowcase({ title, desc, stack, color, links }: any) {
             </a>
           </div>
         </div>
-        {/* CHANGE : Description plus claire */}
         <p className="text-sm text-neutral-300 leading-relaxed mb-6 flex-grow">
           {desc}
         </p>
@@ -360,4 +451,36 @@ function ProjectShowcase({ title, desc, stack, color, links }: any) {
       </div>
     </div>
   );
+}
+
+function Typewriter({ text }: { text: string }) {
+  const [displayText, setDisplayText] = useState("");
+  
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setDisplayText(text.slice(0, i));
+      i++;
+      if (i > text.length) clearInterval(timer);
+    }, 100);
+    return () => clearInterval(timer);
+  }, [text]);
+
+  return (
+  <span className="relative whitespace-pre-line">
+    {displayText.split("\n").map((line, index) => (
+      <span key={index}>
+        {line}
+        <br />
+      </span>
+    ))}
+
+    <motion.span
+      animate={{ opacity: [1, 0] }}
+      transition={{ repeat: Infinity, duration: 0.8 }}
+      className="inline-block w-[3px] h-[1em] bg-indigo-500 ml-1 align-middle"
+    />
+  </span>
+);
+
 }
