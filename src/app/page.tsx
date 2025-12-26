@@ -36,7 +36,8 @@ const CONTENT = {
     role: "Software Engineering Student",
     availablity: "Available for Summer 2026 CO-OP",
     location: "Ottawa, Ontario, Canada",
-    resumeBtn: "Request Resume",
+    resumeBtn: "Resume",
+    resumeLink: "https://drive.google.com/file/d/12LPdYfG_PGixXeaPjKfXeezIIZBZhs8a/view?usp=sharing",
     ui: {
       viewTimeline: "VIEW TIMELINE",
       hideDetails: "HIDE DETAILS",
@@ -99,7 +100,8 @@ const CONTENT = {
     role: "Étudiant en Génie Logiciel",
     availablity: "Disponible pour stage Été 2026 CO-OP",
     location: "Ottawa, Ontario, Canada",
-    resumeBtn: "Demander le CV",
+    resumeBtn: "CV",
+    resumeLink: "https://drive.google.com/file/d/12LPdYfG_PGixXeaPjKfXeezIIZBZhs8a/view?usp=sharing",
     ui: {
       viewTimeline: "VOIR CHRONOLOGIE",
       hideDetails: "MASQUER DÉTAILS",
@@ -231,9 +233,17 @@ export default function Home() {
 
               {/* ACTIONS  */}
               <div className="flex items-center gap-3 mt-auto">
-                <a href="mailto:shmrayan@gmail.com?subject=Resume Request&body=Hello Rayan, we need to nerf you immediately because you are too good. Jokes aside, I would like to see your resume." 
+                {/* ANCIEN CODE (MAIL) EN COMMENTAIRE : 
+                  <a href="mailto:shmrayan@gmail.com?subject=Resume Request&body=Hello Rayan, we need to nerf you immediately because you are too good. Jokes aside, I would like to see your resume." 
+                    className="flex-grow bg-white text-black h-14 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg">
+                    <Mail size={18}/> {t.resumeBtn}
+                  </a>
+                */}
+                <a href={t.resumeLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
                   className="flex-grow bg-white text-black h-14 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-95 transition-all flex justify-center items-center gap-2 shadow-lg">
-                  <Mail size={18}/> {t.resumeBtn}
+                  <Download size={18}/> {t.resumeBtn}
                 </a>
             
                 <a href="https://www.linkedin.com/in/rayan-saadani-hassani/" target="_blank" 
@@ -331,7 +341,7 @@ export default function Home() {
                       <ProjectShowcase 
                         title={t.projects.autoapply.title}
                         desc={t.projects.autoapply.desc}
-                        stack={['Python', 'Selenium', 'SQLAlchemy','scikit-learn', 'NumPy']}
+                        stack={['Python', 'Selenium', 'SQLAlchemy','scikit-learn',]}
                         links={{ repo: "https://github.com/ShmRayan/ApplyAI" }}
                         color="from-indigo-500/20 to-purple-500/20"
                         //className="md:col-span-2 md:w-[calc(50%-10px)] mx-auto" //center
